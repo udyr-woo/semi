@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cloud.bluetea.mapper.TicketMapper">
+
+	<!-- <select id="ticketList" resultType="ticket">
+ 		select * from ticket where ticketNum > 0;
+ 	</select> -->
+ 	
+ 	
+ 	<select id="getTicket" resultMap="getticketMap2">
+ 		select ctno, seatx, seaty, regdate
+ 		from ticket
+ 		natural join cinema c
+		natural join cinema_info ci
+		natural join theater_info
+		natural join screentime s
+		natural join movie m
+		where ctno = #{ctno} and seatx = #{seatx} and seaty = #{seaty}
+ 	</select>
+ 	
+ 	<resultMap type="ticket" id="getticketMap2">
+ 		<id property="tno" column="tno"/>
+ 		<result property="tno" column="tno" />
+ 		<result property="ctno" column="ctno" />
+ 		<result property="seatx" column="seatx" />
+ 		<result property="seaty" column="seaty" />
+ 		<result property="memberid" column="memberid" />
+ 		<result property="regdate" column="regdate" />
+ 		<result property="screendate" column="screendate" />
+ 		
+		<collection property="cinemas" resultMap="getcinemaMap3" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="cinema" id="getcinemaMap3">
+ 		<id property="theaterno" column="theaterno"/>
+ 		<result property="ctno" column="ctno" />
+ 		<result property="theaterno" column="theaterno" />
+ 		<result property="theaterName" column="theaterName" />
+ 		<result property="cinemaNum" column="cinemaNum" />
+ 		<result property="cinemaRegion" column="cinemaRegion" />
+ 		<result property="movieNum" column="movieNum" />
+ 		<result property="movieName" column="movieName" />
+ 		
+		<collection property="screenTimes" resultMap="getscreenTimeMap4" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="screenTime" id="getscreenTimeMap4">
+ 		<!-- <id property="screenTimeNum" column="screenTimeNum" /> -->
+ 		<result property="remain" column="remain" />
+		<result property="screenTimeNum" column="screenTimeNum"/>
+ 		<result property="screenTimeTime" column="screenTimeTime"/>
+ 	</resultMap>
+ 	
+ 	
+ 	
+ 	<select id="getSeat" resultMap="getticketMap">
+ 		select ctno, seatx, seaty, regdate
+ 		from ticket
+ 		natural join cinema c
+		natural join cinema_info ci
+		natural join theater_info
+		natural join screentime s
+		natural join movie m
+		where ctno = #{ctno} and seatx = #{seatx} and seaty = #{seaty}
+ 	</select>
+ 	
+ 	<resultMap type="ticket" id="getticketMap">
+ 		<id property="tno" column="tno"/>
+ 		<result property="tno" column="tno" />
+ 		<result property="ctno" column="ctno" />
+ 		<result property="seatx" column="seatx" />
+ 		<result property="seaty" column="seaty" />
+ 		<result property="memberid" column="memberid" />
+ 		<result property="regdate" column="regdate" />
+ 		<result property="screendate" column="screendate" />
+ 		
+		<collection property="cinemas" resultMap="getcinemaMap2" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="cinema" id="getcinemaMap2">
+ 		<id property="theaterno" column="theaterno"/>
+ 		<result property="ctno" column="ctno" />
+ 		<result property="theaterno" column="theaterno" />
+ 		<result property="theaterName" column="theaterName" />
+ 		<result property="cinemaNum" column="cinemaNum" />
+ 		<result property="cinemaRegion" column="cinemaRegion" />
+ 		<result property="movieNum" column="movieNum" />
+ 		<result property="movieName" column="movieName" />
+ 		
+		<collection property="screenTimes" resultMap="getscreenTimeMap2" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="screenTime" id="getscreenTimeMap2">
+ 		<!-- <id property="screenTimeNum" column="screenTimeNum" /> -->
+ 		<result property="remain" column="remain" />
+		<result property="screenTimeNum" column="screenTimeNum"/>
+ 		<result property="screenTimeTime" column="screenTimeTime"/>
+ 	</resultMap>
+ 	
+ 	<insert id="insertTicket">
+ 		insert ticket (ctno, seatx, seaty, memberid, resno, screendate) values (#{ctno}, #{seatx}, #{seaty}, #{memberid}, #{resno}, #{date});
+ 		<selectKey order="AFTER" keyProperty="tno" resultType="long">
+ 		select max(tno) from ticket
+ 		</selectKey>
+ 	</insert>
+ 	
+ 	<!-- 1명의 user가 예매했던 ticket 조회 -->
+ 	<select id="getListTicketMember" resultType="ticket">
+ 		select * from ticket where memberid = #{memberid}	
+ 	</select>
+ 	
+ 	<!-- 한 영화에 예매된 ticket 조회 -->
+ 	<select id="getListTicketCinema">
+ 		select * from ticket where ctno = #{ctno}
+ 	</select>
+ 	
+ 	<select id="getTicketByTno" resultType="ticket">
+ 		select * from ticket where tno = #{tno};
+ 	</select>
+	
+	<select id="getListTicketByResno" resultType="ticket">
+		select * from ticket where resno = #{resno};
+	</select>
+  
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cloud.bluetea.mapper.ReviewMapper">
+	<sql id="search">
+		<trim prefix=" AND (" suffix=")" prefixOverrides="or">
+				<foreach collection="typeArr" item="t">
+					<trim prefix="or">
+						<choose>
+							<when test="t == 'T'.toString()">
+								reviewTitle like CONCAT(CONCAT('%',#{keyword}),'%')
+							</when>
+							<when test="t == 'C'.toString()">
+								reviewContent like CONCAT(CONCAT('%',#{keyword}),'%')
+							</when>
+							<when test="t == 'W'.toString()">
+								memberId like CONCAT(CONCAT('%',#{keyword}),'%')
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+	</sql>
+
+ 	<select id="getList" resultType="Review">
+		select * from review where reviewNo > 0;
+ 	</select>
+ 	
+ 	<select id="getListByMovieNum" resultType="Review">
+		select * from review where reviewNo > 0 and movieNum = #{movieNum};
+ 	</select>
+ 	
+ 	<select id="getListWithPaging" resultType="Review">
+		<![CDATA[
+ 		WITH a AS (
+			SELECT tb.* FROM review tb WHERE reviewNo > 0
+			]]>
+			<include refid="search"/>
+		<![CDATA[	)
+			SELECT * FROM a order by reviewNo desc limit #{limit} offset #{offset}
+		]]>
+ 	</select>
+ 	<insert id="insert" >
+		insert into review (reviewNo, movieNum, reviewTitle, reviewContent, memberId)
+		values (nextval(seqboard), #{movieNum}, #{reviewTitle}, #{reviewContent}, #{memberId})
+	</insert>
+ 	
+ 	<insert id="insertSelectKey"> 
+		<selectKey keyProperty="reviewNo" order="BEFORE" resultType="long">
+			select nextval(seqboard)
+		</selectKey>
+		insert into review (reviewNo, movieNum, reviewTitle, reviewContent, memberId, movieRecommend)
+		 values (
+		 #{reviewNo}
+		 , #{movieNum}
+		 , #{reviewTitle}
+		 , #{reviewContent}
+		 , #{memberId}
+		 , #{movieRecommend}
+		 )
+	</insert>
+ 	
+ 	<select id="read" resultType="Review">
+  		select * from review where reviewNo = #{reviewNo}
+  	</select>
+  	
+  	<update id="update">
+		update review set 
+		reviewTitle = #{reviewTitle}
+		,reviewContent = #{reviewContent}
+		,memberId = #{memberId}
+		,reviewUpdatedate = now()
+		,movieRecommend = #{movieRecommend}
+		where reviewNo = #{reviewNo}
+	</update>
+	
+	<delete id="delete">
+		delete from review where reviewNo = #{reviewNo}
+ 	</delete>
+ 	
+ 	<select id="getTotalCnt" resultType="int">
+ 		select count(*) from review where reviewNo > 0
+ 		<include refid="search"/>
+ 	</select>
+ 	<select id="getListForDetail" resultType="Review">
+		SELECT * FROM review WHERE movieNum = #{movieNum} and reviewNo > #{reviewNo} order by reviewNo limit 5
+	</select>
+<!--  	<update id="updateReplyCnt">
+ 		update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+ 	</update> -->
+</mapper>

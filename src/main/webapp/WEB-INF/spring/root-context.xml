@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<mybatis-spring:scan base-package="cloud.bluetea.mapper"/>
+	<context:property-placeholder location="classpath:/jdbc.properties"/>
+	<context:component-scan base-package="cloud.bluetea.service cloud.bluetea.mapper"/>
+	<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
+		<property name="driverClassName" value="${db.classname}"/>
+		<property name="jdbcUrl" value="${db.url}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+	</bean>
+	
+	<bean class="com.zaxxer.hikari.HikariDataSource" destroy-method="close" id="dataSource">
+		<constructor-arg ref="hikariConfig"/>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="typeAliasesPackage" value="cloud.bluetea.domain"/>
+	</bean>
+	
+	<!-- gmail설정 -->
+	<bean id="mailSender2" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+	     <property name="host" value="smtp.gmail.com" />
+	     <property name="port" value="587" />
+	 <property name="username" value="wodnjsdl0101"/> <!-- 자신의 이메일 아이디 -->
+	 <property name="password" value="xzyfpylpsqkoxcxr"/> <!-- 자신의 비밀번호 -->
+	 <!-- 보안연결 TLS과 관련된 설정 -->
+	     <property name="javaMailProperties">
+	    <props>
+	       <prop key="mail.smtp.auth">true</prop>
+	       <prop key="mail.smtp.starttls.enable">true</prop>
+	    </props>
+	     </property>
+	</bean>
+	
+	
+	<!-- Mail api를 사용하기 위한 bean 등록 naver -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com"/> 
+		<property name="port" value="465"/>
+	<property name="username" value="nhy3533"/>
+	<property name="password" value="U6ES6E82PLLG"/>
+	<property name="javaMailProperties">
+		<props>
+			<prop key="mail.smtp.auth">true</prop>
+			<prop key="mail.smtp.starttls.enable">true</prop>
+	 		<prop key="mail.smtps.checkserveridentity">true</prop>
+			<prop key="mail.smtps.ssl.trust">*</prop>
+			<prop key="mail.debug">true</prop>
+			<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+		</props>
+	</property>
+	</bean>
+
+</beans>

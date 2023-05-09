@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cloud.bluetea.mapper.CinemaMapper">
+	<select id="getRegionList" resultType="cinema">
+		select distinct cinemaNum, cinemaRegion, movieNum from cinema c natural join cinema_info ci where movieNum = ${movieNum};
+	</select>
+	<select id="getCinemaList" resultMap="cinemaMap">
+ 		select ctno, theaterno, movieNum, cinemaNum, cinemaRegion, name theaterName, movieName, screenTimeNum, screenTimeTime , 184 - (select count(*) from ticket t where t.ctno = ct.ctno and screendate = str_to_date(#{date}, '%Y%m%d')) remain
+		from cinema ct 
+		natural join cinema_info c 
+		natural join theater_info
+		natural join screentime s
+		natural join movie m
+		where movieNum = #{movieNum} and cinemaNum = #{cinemaNum}
+		order by cinemaNum, theaterno
+ 	</select>
+ 	<resultMap type="cinema" id="cinemaMap">
+ 		<id property="theaterno" column="theaterno"/>
+ 		<result property="ctno" column="ctno" />
+ 		<result property="theaterno" column="theaterno" />
+ 		<result property="theaterName" column="theaterName" />
+ 		<result property="cinemaNum" column="cinemaNum" />
+ 		<result property="cinemaRegion" column="cinemaRegion" />
+ 		<result property="movieNum" column="movieNum" />
+ 		<result property="movieName" column="movieName" />
+ 		
+		<collection property="screenTimes" resultMap="screenTimeMap" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="screenTime" id="screenTimeMap">
+ 		<!-- <id property="screenTimeNum" column="screenTimeNum" /> -->
+ 		<result property="remain" column="remain" />
+		<result property="screenTimeNum" column="screenTimeNum"/>
+ 		<result property="screenTimeTime" column="screenTimeTime"/>
+ 	</resultMap>
+ 	
+ 	
+ 	<select id="getCinema" resultMap="getcinemaMap">
+	 	select ctno, theaterno, movieNum, cinemaNum, cinemaRegion, name theaterName, movieName, screenTimeNum, screenTimeTime , 184 - (select count(*) from ticket t where t.ctno = ct.ctno and screendate = str_to_date(#{date}, '%Y%m%d')) remain
+		from cinema ct
+		natural join cinema_info c 
+		natural join theater_info
+		natural join screentime s
+		natural join movie m
+		where movieNum = #{movieNum} and cinemaNum = #{cinemaNum} and screenTimeNum = #{screenTimeNum} and theaterno = #{theaterno}
+		order by cinemaNum, theaterno
+ 	</select>
+ 	<resultMap type="cinema" id="getcinemaMap">
+ 		<id property="theaterno" column="theaterno"/>
+ 		<result property="ctno" column="ctno" />
+ 		<result property="theaterno" column="theaterno" />
+ 		<result property="theaterName" column="theaterName" />
+ 		<result property="cinemaNum" column="cinemaNum" />
+ 		<result property="cinemaRegion" column="cinemaRegion" />
+ 		<result property="movieNum" column="movieNum" />
+ 		<result property="movieName" column="movieName" />
+ 		
+ 		
+		<collection property="screenTimes" resultMap="getscreenTimeMap" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="screenTime" id="getscreenTimeMap">
+ 		<!-- <id property="screenTimeNum" column="screenTimeNum" /> -->
+ 		<result property="remain" column="remain" />
+		<result property="screenTimeNum" column="screenTimeNum"/>
+ 		<result property="screenTimeTime" column="screenTimeTime"/>
+ 	</resultMap>
+ 	
+ 	<insert id="insertCinema">
+ 		insert into cinema (theaterno, cinemaNum, movieNum, screenTimeNum) values (#{theaterno}, #{cinemaNum}, #{movieNum}, #{screenTimeNum}) 
+ 	</insert>
+ 	
+ 	
+ 	
+ 	<select id="get" resultMap="getcinemaMap2">
+	 	select ctno, theaterno, movieNum, cinemaNum, cinemaRegion, name theaterName, movieName, screenTimeNum, screenTimeTime
+		from cinema ct
+		natural join cinema_info c 
+		natural join theater_info
+		natural join screentime s
+		natural join movie m
+		where ctno = #{ctno}
+ 	</select>
+ 	<resultMap type="cinema" id="getcinemaMap2">
+ 		<id property="theaterno" column="theaterno"/>
+ 		<result property="ctno" column="ctno" />
+ 		<result property="theaterno" column="theaterno" />
+ 		<result property="theaterName" column="theaterName" />
+ 		<result property="cinemaNum" column="cinemaNum" />
+ 		<result property="cinemaRegion" column="cinemaRegion" />
+ 		<result property="movieNum" column="movieNum" />
+ 		<result property="movieName" column="movieName" />
+ 		
+		<collection property="screenTimes" resultMap="getscreenTimeMap3" />
+ 		
+ 	</resultMap>
+ 	<resultMap type="screenTime" id="getscreenTimeMap3">
+ 		<!-- <id property="screenTimeNum" column="screenTimeNum" /> -->
+ 		<result property="remain" column="remain" />
+		<result property="screenTimeNum" column="screenTimeNum"/>
+ 		<result property="screenTimeTime" column="screenTimeTime"/>
+ 	</resultMap>
+ 	
+ 	
+</mapper>

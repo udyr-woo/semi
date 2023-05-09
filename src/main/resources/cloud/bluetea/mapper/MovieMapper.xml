@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cloud.bluetea.mapper.MovieMapper">
+
+	<select id="movieList" resultType="movie">
+ 		select * from movie where movieNum > 0
+ 		
+ 	</select>
+	<select id="movieGetList" resultType="movie">
+ 		select *, datediff(str_to_date(#{date}, '%Y-%m-%d'), movieOpendate)
+		from movie m where  movieNum > 0 and datediff(str_to_date(#{date}, '%Y%m%d'), movieOpendate) &lt;= 14 
+ 		
+ 	</select>
+  
+</mapper>
