@@ -40,3 +40,5 @@ WKKL은 CGV처럼 조원들의 성을 따서 만든 영화예매사이트�
 #### 영화 소개 및 후기
 - 후기: CRUD
 - 영화 소개: 포스터 및 영화정보 표시
+
+우성준이 작성한 파일:HomeController, MovieController, ReviewController,
