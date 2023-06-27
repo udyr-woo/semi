@@ -13,7 +13,7 @@ WKKL은 CGV처럼 조원들의 성을 따서 만든 영화예매사이트�
 
 ### 🧑‍🤝‍🧑 맴버구성
  - 팀장  : 우성준 - 예매결제, 메인페이지, 영화 소개 게시판, 후기 게시판
- - 팀원1 : 김** - 영화 선택(날짜, 시간, 상영관, 좌석까지)
+ - 팀원1 : 김** - 영화 선택(날짜, 시간, 상영관, 좌석까지), 영화정보 크롤링
  - 팀원2 : 이** - 로그인, 회원가입
 
 ### ⚙️ 개발 환경
@@ -41,4 +41,10 @@ WKKL은 CGV처럼 조원들의 성을 따서 만든 영화예매사이트�
 - 후기: CRUD
 - 영화 소개: 포스터 및 영화정보 표시
 
-우성준이 작성한 파일:HomeController, MovieController, ReviewController,
+우성준이 작성한 파일:
+- Controller: HomeController, MovieController, ReviewController, PaymentController
+- Domain: Criteria, PageDto, Review, Movie
+- Mapper: MovieMapper, ReviewMapper
+- Service: MovieService(Impl), ReviewService(Impl)
+- JSP: index, payment, getReview, reviewList, getMovie, movieList, header, head, footer
+- JS: review
