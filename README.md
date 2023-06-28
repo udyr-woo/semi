@@ -1,5 +1,6 @@
 # WKKL
 스프링 레거시 + JSP 영화 예매 사이트
+https://semi2.bluetea.cloud/
 
 
 ## 🖥️ 프로젝트 기획의도
@@ -22,7 +23,8 @@ WKKL은 CGV처럼 조원들의 성을 따서 만든 영화예매사이트�
 - **IDE** : STS 3
 - **Framework** : Spring legacy
 - **Database** : mariadb
-- **ORM** : Mybatis
+- **Mapper** : Mybatis
+- **SCMr** : SVN
 
 ## 📌 주요 기능
 #### 회원관리
@@ -35,16 +37,25 @@ WKKL은 CGV처럼 조원들의 성을 따서 만든 영화예매사이트�
 - 좌석 선택
 - 결제 페이지
 - 예매 완료
+  
 #### 메인 페이지
 - 메인 포스터(영화) 이미지 슬라이드(CSS)
-#### 영화 소개 및 후기
+  
+#### 영화소개 및 후기
 - 후기: CRUD
 - 영화 소개: 포스터 및 영화정보 표시
 
-우성준이 작성한 파일:
+
+## 📚 우성준이 작성한 파일
 - Controller: HomeController, MovieController, ReviewController, PaymentController
 - Domain: Criteria, PageDto, Review, Movie
 - Mapper: MovieMapper, ReviewMapper
 - Service: MovieService(Impl), ReviewService(Impl)
 - JSP: index, payment, getReview, reviewList, getMovie, movieList, header, head, footer
 - JS: review
+
+## 📝 클론 시 필요한 jdbc.properties 설정
+- db.driver=org.mariadb.jdbc.Driver
+- db.url=jdbc:mariadb://localhost:{포트}/{DB이름}
+- db.username={사용자 이름}
+- db.password={암호}
