@@ -59,3 +59,5 @@ WKKL은 CGV처럼 조원들의 성을 따서 만든 영화예매사이트�
 - db.url=jdbc:mariadb://localhost:{포트}/{DB이름}
 - db.username={사용자 이름}
 - db.password={암호}
+
+추가 dump.spl파일을 받아 db에서 실행!
