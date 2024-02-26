@@ -1,6 +1,5 @@
 # WKKL
 스프링 레거시 + JSP 영화 예매 사이트
-https://semi2.bluetea.cloud/
 
 
 ## 🖥️ 프로젝트 기획의도
